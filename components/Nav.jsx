@@ -54,6 +54,7 @@ const Nav = () => {
         ) : (
           <>
             {providers &&
+              // Object.values convert all the values of providers object into an array
               Object.values(providers).map((provider) => (
                 <button
                   type="button"
@@ -67,7 +68,6 @@ const Nav = () => {
           </>
         )}
       </div>
-
       {/* Mobile Navigation */}
       <div className="sm:hidden flex relative">
         {session?.user ? (

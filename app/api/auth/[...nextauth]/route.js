@@ -4,6 +4,7 @@ import User from "@models/user";
 import { connectToDB } from "@utils/database";
 
 const handler = NextAuth({
+  // In NextAuth we pass a provider and callbacks
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
