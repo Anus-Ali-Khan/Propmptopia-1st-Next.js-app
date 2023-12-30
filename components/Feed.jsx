@@ -23,7 +23,16 @@ const Feed = () => {
   const [searchedResults, setSearchedResults] = useState([]);
   const [posts, setPosts] = useState([]);
 
-  const handleSearchChange = (e) => {};
+  const handleSearchChange = (e) => {
+    setSearchText(e.target.value);
+    posts.filter((val) => {
+      if (searchText == "") {
+        return val;
+      } else if (val.prompt.toLowerCase().includes(searchText.toLowerCase())) {
+        return val;
+      }
+    });
+  };
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -31,7 +40,6 @@ const Feed = () => {
       const data = await response.json();
       setPosts(data);
     };
-    fetchPosts();
   }, []);
 
   return (
