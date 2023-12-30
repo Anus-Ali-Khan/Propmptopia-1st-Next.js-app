@@ -19,19 +19,23 @@ const PromptCardList = ({ data, handleTagClick }) => {
 
 const Feed = () => {
   const [searchText, setSearchText] = useState("");
-  const [searchTimeout, setSearchTimeout] = useState(null);
-  const [searchedResults, setSearchedResults] = useState([]);
   const [posts, setPosts] = useState([]);
+  const [searchPostData, setSearchPostData] = useState([]);
 
   const handleSearchChange = (e) => {
+    e.preventDefault();
     setSearchText(e.target.value);
-    posts.filter((val) => {
-      if (searchText == "") {
-        return val;
-      } else if (val.prompt.toLowerCase().includes(searchText.toLowerCase())) {
-        return val;
-      }
-    });
+    const search = e.target.value;
+    if (search !== "") {
+      setSearchPostData(
+        posts.filter(
+          (post) =>
+            post.prompt.toLowerCase().includes(search.toLowerCase()) ||
+            post.tag.toLowerCase().includes(search.toLowerCase()) ||
+            post.creator.username.toLowerCase().includes(search.toLowerCase())
+        )
+      );
+    }
   };
 
   useEffect(() => {
@@ -40,21 +44,24 @@ const Feed = () => {
       const data = await response.json();
       setPosts(data);
     };
+    fetchPosts();
   }, []);
 
   return (
     <section className="feed">
-      <form className="relative w-full flex-center">
-        <input
-          type="text"
-          placeholder="Search for a tag or a username"
-          value={searchText}
-          onChange={handleSearchChange}
-          required
-          className="search_input peer"
-        />
-      </form>
-      <PromptCardList data={posts} handleTagClick={() => {}} />
+      {/* <form className="relative w-full flex-center"> */}
+      <input
+        type="text"
+        placeholder="Search for a tag or a username"
+        value={searchText}
+        onChange={handleSearchChange}
+        className="search_input peer"
+      />
+      {/* </form> */}
+      <PromptCardList
+        data={searchText ? searchPostData : posts}
+        handleTagClick={() => {}}
+      />
     </section>
   );
 };
