@@ -38,6 +38,15 @@ const Feed = () => {
     }
   };
 
+  const handleTagClick = (tagName) => {
+    setSearchText(tagName);
+    setSearchPostData(
+      posts.filter((post) => {
+        return post.tag.toLowerCase().includes(tagName);
+      })
+    );
+  };
+
   useEffect(() => {
     const fetchPosts = async () => {
       const response = await fetch("/api/prompt");
@@ -60,7 +69,7 @@ const Feed = () => {
       {/* </form> */}
       <PromptCardList
         data={searchText ? searchPostData : posts}
-        handleTagClick={() => {}}
+        handleTagClick={handleTagClick}
       />
     </section>
   );
